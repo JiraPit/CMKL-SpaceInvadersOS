@@ -1,13 +1,13 @@
 #[global_allocator]
-static ALLOCATOR: Allocator = Allocator;
+static ALLOCATOR: SequentialAllocator = SequentialAllocator;
 
 use alloc::alloc::{GlobalAlloc, Layout};
-pub struct Allocator;
 
 pub static mut HEAP_START: usize = 0x0;
 pub static mut HEAP_END: usize = 0x0;
 
-unsafe impl GlobalAlloc for Allocator {
+pub struct SequentialAllocator;
+unsafe impl GlobalAlloc for SequentialAllocator {
     unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
         let allocated_ptr = HEAP_START;
         HEAP_START += layout.size();

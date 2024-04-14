@@ -234,14 +234,14 @@ fn kernel_main(boot_info: &'static mut BootInfo) -> ! {
     //- Screen Initialization
     let framebuffer = boot_info.framebuffer.as_mut().unwrap();
     drw::init(framebuffer);
-    setup_game();
+    setup();
 
     //- Start game
     HandlerTable::new().timer(update).keyboard(keyboard).start();
 }
 
 /// Setup the game, called once at the beginning of each game
-fn setup_game() {
+fn setup() {
     let mut is_running = IS_RUNNING.lock();
     let mut player = PLAYER.lock();
     let mut frame_count = FRAME_COUNT.lock();
@@ -530,7 +530,7 @@ fn keyboard(key: DecodedKey) {
                 let is_running = IS_RUNNING.lock();
                 if !*is_running {
                     drop(is_running);
-                    setup_game();
+                    setup();
                 }
             }
             _ => {}
